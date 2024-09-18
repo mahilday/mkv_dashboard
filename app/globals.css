@@ -32,7 +32,7 @@
     @apply font-medium;
   }
   h6 {
-    @apply text-[14px];
+    @apply text-[14px] ;
     @apply font-semibold;
   }
   p {

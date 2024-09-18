@@ -1,12 +1,12 @@
 "use client";
 
 import { ReactNode, FC } from "react";
-import Icon, { IconProps } from "../Icons/Icon";
 import Link, { LinkProps } from "next/link";
 import { usePathname } from "next/navigation";
 import { TIconPack } from "@/assets/icons";
 import variants, { VariantTypes } from "./variants";
 import ComponentLoader from "../Loaders/ComponentLoader";
+import Icon, { IconProps } from "../Icons/Icon";
 
 export interface NavLinkButtonProps extends Omit<LinkProps, "className"> {
   children?: ReactNode;
@@ -45,7 +45,7 @@ const NavLinkButton: FC<NavLinkButtonProps> = ({
   const classes = [
     buttonStyle,
     `${isOpen ? "pl-3 pr-3 flex" : "flex p-3 justify-center"}`,
-    `shrink-0  transition items-center gap-3 text-gray-400 bg-transparent transition-all duration-300 ease-in-out hover:rounded-md h-[44px]`,
+    `shrink-0 transition items-center gap-3 bg-transparent transition-all duration-300 ease-in-out hover:rounded-md h-[44px]`,
     shapeClassName,
     className,
     variants?.[variant][isActive ? "active" : "inactive"].button,
