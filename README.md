@@ -12,6 +12,8 @@ Welcome to the Medische Kliniek Velson Next.js application repository! This proj
 
 - **(home):** Contains page implemented.
 
+- **husky:** contains continuous linting for codebase to check for errors on commit.
+
 ## Getting Started
 
 To get started with the development setup, follow these steps:
@@ -22,19 +24,19 @@ To get started with the development setup, follow these steps:
    git clone https://github.com/your-username/your-repository.git
    cd your-repository
    ```
-
-```
-npm install
-```
+2. **Install:**
+   ```bash
+   npm install
+   ```
 
 # Run the application
 
-```
-npm run dev
-```
+   ```bash
+   npm run dev
+   ```
 
 # To build
 
-```
-npm run build
-```
+   ```
+   npm run build
+   ```
