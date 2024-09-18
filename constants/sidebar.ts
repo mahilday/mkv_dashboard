@@ -4,13 +4,13 @@ export const authNavigationItems: NavigationType[] = [
   {
     icon: "home",
     title: "Home",
-    href: "/agent",
+    href: "#",
     active: false,
   },
   {
     icon: "document",
     title: "Document Management",
-    href: "",
+    href: "/",
     active: false,
   },
   {
