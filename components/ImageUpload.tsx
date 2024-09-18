@@ -63,8 +63,9 @@ const ImageUpload = ({
         return prevProgress + 10;
       });
     }, 300);
+
+    return file;
   };
-  console.log({ file });
 
   return (
     <div className="w-full mx-auto">
