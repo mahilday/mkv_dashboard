@@ -39,7 +39,7 @@ const Sidebar: FC = () => {
         </motion.div>
       </section>
       <motion.div
-        className={` h-full  px-[15px] relative scrollbar-custom overflow-x-hidden overflow-y-auto `}
+        className={` h-full  pl-[15px] relative scrollbar-custom overflow-x-hidden overflow-y-auto `}
         variants={sidebarVariants}
         initial={isSidebarOpen ? "open" : "collapsed"}
         animate={isSidebarOpen ? "open" : "collapsed"}
