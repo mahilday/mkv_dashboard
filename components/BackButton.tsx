@@ -22,7 +22,7 @@ const BackButton: React.FC<Props> = ({
     <div className={`py-2 ${className}`}>
       <button
         onClick={() => clickHandler()}
-        className="flex md:border border-light-primary-300 text-light-gray-400 generalBg px-4 gap-3 rounded-full items-center"
+        className="flex md:border dark:border-none border-light-primary-300 dark:bg-dark-gray text-light-gray-400 generalBg px-4 gap-3 rounded-full items-center"
         type="button"
       >
         <IconComponent name="left-arrow-circle" />

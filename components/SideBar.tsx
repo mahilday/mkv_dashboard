@@ -25,7 +25,7 @@ const Sidebar: FC = () => {
       className={`fixed border-r border-light-primary-300 dark:border-dark-common-black flex flex-col top-0  min-h-screen h-full left-0 z-50 bg-light-common-white gap-5 dark:bg-light-gray`}
     >
       <section className="flex justify-between">
-        <div className={`${isSidebarOpen ? "flex" : "hidden"}`}>
+        <div className={`ml-8 ${isSidebarOpen ? "flex" : "hidden"}`}>
           <Image src={Logo} width={135} height={54} alt={appTitle} />
         </div>
         <motion.div

@@ -1,53 +1,40 @@
 import Button from "@/components/Button";
 import IconComponent from "@/components/Icons/Icon";
 import SearchableSelect from "@/components/Inputs/SearchableSelect";
-import { NewDocType } from "@/types/document";
-import { FormikErrors } from "formik";
+import { ISingleItemType } from "./SingleGroupItem";
+import { useColleagueOptions } from "@/app/api/hooks/useColleagueOptions";
+import { useFunctionOptions } from "@/app/api/hooks/useFunctionOptions";
 
-type SingleDraftType = {
+export type SingleDraftType = {
+  id: string;
   function: string;
   colleague: string;
 };
+
+interface IProps extends Omit<ISingleItemType, "group"> {
+  drafter: SingleDraftType;
+}
 
 const SingleColleagueItem = ({
   index,
   drafter,
   handleRemoveItem,
-  setFieldValue,
+  handleFunctionChange,
+  handleColleagueChange,
   count = 1,
-}: {
-  index: number;
-  drafter: SingleDraftType;
-  count?: number;
-  handleRemoveItem?(item: SingleDraftType, index: number): void;
-  setFieldValue: (
-    field: string,
-    value: string | number,
-    shouldValidate?: boolean
-  ) => Promise<void> | Promise<FormikErrors<NewDocType>>;
-}) => {
-  const functionOptions = [
-    { label: "Manager", value: "Manager" },
-    { label: "Developer", value: "Developer" },
-    // Add more options as needed
-  ];
-
-  const colleagueOptions = [
-    { label: "John Doe", value: "John Doe" },
-    { label: "Jane Smith", value: "Jane Smith" },
-  ];
-
+}: IProps) => {
+  const { functionOptions, loading: functionLoading } = useFunctionOptions();
+  const { colleagueOptions, loading: colleagueLoading } = useColleagueOptions();
   return (
     <div className="flex items-center flex-wrap w-full gap-5">
       <div className="flex-1 min-w-[200px]">
         <SearchableSelect
           options={functionOptions}
-          onChange={(value) =>
-            setFieldValue(`drafters[${index}].function`, value?.value)
-          }
+          onChange={handleFunctionChange}
           className="w-full"
           placeholder="Select Function"
           label="Function"
+          isLoading={functionLoading}
           required
           isSearchable={true}
         />
@@ -55,10 +42,9 @@ const SingleColleagueItem = ({
       <div className="flex-1 min-w-[200px]">
         <SearchableSelect
           options={colleagueOptions}
-          onChange={(value) =>
-            setFieldValue(`drafters[${index}].colleague`, value?.value)
-          }
+          onChange={handleColleagueChange}
           className="w-full"
+          isLoading={colleagueLoading}
           placeholder="Select Colleague"
           required
           label="Colleague"
@@ -70,7 +56,7 @@ const SingleColleagueItem = ({
         <Button
           onClick={() => handleRemoveItem?.(drafter, index)}
           variant="error"
-          className="px-3 py-2"
+          className="xl:mt-2 px-3 py-2"
         >
           <IconComponent name="minus" />
         </Button>

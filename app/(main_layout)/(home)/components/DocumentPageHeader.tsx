@@ -51,7 +51,7 @@ const DocumentPageHeader = () => {
       </div>
       <div className="flex justify-end gap-5">
         <Button
-          className="btn-md h-46"
+          className="btn-md !h-46"
           leftIcon="instant-upload"
           onClick={handleOpenDialogue}
           innerTextClassname="hidden md:flex"
@@ -62,7 +62,7 @@ const DocumentPageHeader = () => {
         <Button
           leftIcon="add-circle"
           variant="primary"
-          className="btn-md h-46"
+          className="btn-md !h-46"
           innerTextClassname="font-bold hidden md:flex text-light-common-white"
         >
           New

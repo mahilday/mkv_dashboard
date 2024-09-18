@@ -1,5 +1,6 @@
-import React, { useState, FC, useEffect } from "react";
-import TextInput from "./TextInput"; // Assuming TextInput is your custom input component
+import React, { useState, FC, useEffect, useRef } from "react";
+import TextInput from "./TextInput";
+import EllipsesLoader from "../Loaders/Ellipses";
 
 export type OptionType = {
   label: string;
@@ -16,6 +17,7 @@ export type SearchableSelectProps = {
   label?: string;
   required?: boolean;
   inputClassName?: string;
+  isLoading?: boolean;
   optionClassName?: string;
   selectedOptionClassName?: string;
 };
@@ -27,6 +29,7 @@ const SearchableSelect: FC<SearchableSelectProps> = ({
   className = "",
   label,
   required,
+  isLoading,
   dropdownClassName = "",
   optionClassName = "",
 }) => {
@@ -35,30 +38,30 @@ const SearchableSelect: FC<SearchableSelectProps> = ({
   const [filteredOptions, setFilteredOptions] = useState<OptionType[]>(options);
   const [selectedOption, setSelectedOption] = useState<OptionType | null>(null);
   const [inputFocused, setInputFocused] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Filter options based on search term
     if (searchTerm === "") {
       setFilteredOptions(options);
     } else {
       setFilteredOptions(
         options.filter((option) =>
-          option.label.toLowerCase().includes(searchTerm.toLowerCase())
-        )
+          option.label.toLowerCase().includes(searchTerm.toLowerCase()),
+        ),
       );
     }
   }, [searchTerm, options]);
 
   const handleSelect = (option: OptionType) => {
     setSelectedOption(option);
-    setSearchTerm(""); // Clear search term after selection
+    setSearchTerm("");
     setIsOpen(false);
     onChange?.(option);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
-    setIsOpen(true); // Open the dropdown when typing
+    setIsOpen(true);
   };
 
   const handleBlur = () => {
@@ -68,10 +71,27 @@ const SearchableSelect: FC<SearchableSelectProps> = ({
     }
   };
 
-  const displayValue = inputFocused ? searchTerm : selectedOption?.label || ""; // Display selectedOption when not typing
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [dropdownRef]);
+
+  const displayValue = inputFocused ? searchTerm : selectedOption?.label || "";
 
   return (
-    <div className={`relative h-max w-full ${className}`}>
+    <div ref={dropdownRef} className={`relative h-max w-full ${className}`}>
       <TextInput
         type="text"
         rightIcon="chevron-down"
@@ -84,37 +104,45 @@ const SearchableSelect: FC<SearchableSelectProps> = ({
         }}
         label={label}
         required={required}
-        className={`w-full text-light-gray border outline-none ${
-          isOpen ? "!border-light-primary" : "border-light-primary-100"
+        className={`w-full border outline-none ${
+          isOpen
+            ? "!border-light-primary"
+            : "border-light-primary-100 dark:border-dark-gray-400"
         }`}
         onChange={handleInputChange}
         onIconClick={() => setIsOpen(!isOpen)}
         rightIconClassName={`${
           isOpen ? "transform rotate-180" : "transform rotate-0"
-        } transition-all duration-300`}
+        }  transition-all duration-300 text-light-gray-400 dark:text-dark-primary-200`}
       />
 
       {isOpen && (
         <div
-          className={`absolute z-10 w-full -mt-4 bg-white rounded-md shadow-lg border !border-light-primary ${dropdownClassName}`}
+          className={`absolute max-h-[50dvh] overflow-y-auto overscroll-contain z-10 w-full -mt-4 bg-white dark:bg-dark-common-dark rounded-md shadow-lg border !border-light-primary ${dropdownClassName}`}
         >
           <ul className="menu menu-compact">
-            {filteredOptions.length > 0 ? (
+            {isLoading ? (
+              <div className="flex items-center justify-center">
+                <EllipsesLoader />
+              </div>
+            ) : filteredOptions.length > 0 ? (
               filteredOptions.map((option) => (
                 <li
                   key={option.value}
-                  className={`cursor-pointer text-light-gray h-46 flex justify-center hover:bg-light-primary-200 rounded-md px-4 ${
+                  className={`cursor-pointer text-light-gray dark:text-dark-common-light h-46 flex justify-center dark:hover:bg-dark-primary hover:bg-light-primary-200 rounded-md px-4 ${
                     selectedOption?.value === option.value
-                      ? "bg-light-primary text-white" // Active state for selected option
+                      ? "bg-light-primary text-white"
                       : ""
                   } ${optionClassName}`}
-                  onMouseDown={() => handleSelect(option)} // Use onMouseDown to prevent blur event from closing the dropdown
+                  onMouseDown={() => handleSelect(option)}
                 >
                   {option.label}
                 </li>
               ))
             ) : (
-              <li className="p-2 text-gray-500">No options found</li>
+              <li className="p-2 text-gray-500 text-center">
+                No options found
+              </li>
             )}
           </ul>
         </div>

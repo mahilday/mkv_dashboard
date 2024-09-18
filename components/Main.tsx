@@ -19,12 +19,14 @@ const Main = ({ children }: { children: React.ReactNode }) => {
       <Header />
       <Suspense
         fallback={
-          <ComponentLoader
-            ellipsesLoaderProps={{
-              className: "transform",
-              contentContainerStyle: "h-4 w-4",
-            }}
-          />
+          <div className="h-[100dvh] bg-light-common-light dark:bg-dark-common-dark">
+            <ComponentLoader
+              ellipsesLoaderProps={{
+                className: "transform",
+                contentContainerStyle: "h-4 w-4",
+              }}
+            />
+          </div>
         }
       >
         <main className="flex-1 mx-auto overscroll-contain container sm:overflow-y-auto">

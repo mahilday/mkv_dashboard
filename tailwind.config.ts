@@ -12,6 +12,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      boxShadow: {
+        "custom-shadow": "4px 4px 20px 0px rgba(117, 197, 193, 0.2)",
+      },
       colors: {
         light: { ...lightColors },
         dark: { ...darkColors },

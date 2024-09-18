@@ -26,7 +26,7 @@ const Tabs: FC<TabsProps> = ({
   return (
     <div
       role="tablist"
-      className={`flex w-full items-center gap-2 h-46 bg-white dark:bg-black  border border-light-primary-300 ${tabClassName}`}
+      className={`flex w-full items-center gap-2 h-46 bg-white dark:bg-dark-gray  border dark:border-none border-light-primary-300 ${tabClassName}`}
     >
       {tabList?.map((item, index) => (
         <a
@@ -40,7 +40,7 @@ const Tabs: FC<TabsProps> = ({
           onClick={item?.onClick}
         >
           <IconComponent name={item?.icon} size={22} />
-          <span className="sm:flex">{item.title}</span>
+          <span className="hidden sm:flex">{item.title}</span>
         </a>
       ))}
     </div>

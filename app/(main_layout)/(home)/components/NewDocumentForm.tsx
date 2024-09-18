@@ -5,14 +5,19 @@ import TextInput from "@/components/Inputs/TextInput";
 import { useFormik } from "formik";
 import React, { ReactNode, useCallback, useEffect } from "react";
 import SingleColleagueItem from "./SingleColleagueItem";
-import { hasEmptyValues } from "@/utils/helperFns";
+import { generateUUID, hasEmptyValues } from "@/utils/helperFns";
 import RadioGroup from "@/components/RadioGroup";
 import { GeneralRadioOptions } from "@/constants/general";
-import SingleGroupItem from "./SingleGroupItem";
+import SingleGroupItem, { SingleGroupType } from "./SingleGroupItem";
 import DatePicker from "@/components/Inputs/DatePicker";
 import ImageUpload from "@/components/ImageUpload";
+import { useClassificationOptions } from "@/app/api/hooks/useClassificationOptions";
+import { useDepartmentOptions } from "@/app/api/hooks/useDepartmentOptions";
 
 const NewDocumentForm = () => {
+  const { classificationOptions, loading } = useClassificationOptions();
+  const { departmentOptions, loading: deptLoading } = useDepartmentOptions();
+
   const { values, errors, setFieldValue, handleSubmit } = useFormik({
     initialValues: {
       department: "",
@@ -21,8 +26,8 @@ const NewDocumentForm = () => {
       documentTitle: "",
       classification: "",
       version: "",
-      drafters: [{ function: "", colleague: "" }],
-      assessors: [{ function: "", colleague: "" }],
+      drafters: [{ id: generateUUID(), function: "", colleague: "" }],
+      assessors: [{ id: generateUUID(), function: "", colleague: "" }],
       copyToNewGroup: "",
       groupMembers: [],
       isRuleOfLife: "",
@@ -36,32 +41,34 @@ const NewDocumentForm = () => {
   });
 
   const onAddNewDrafter = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
     e.preventDefault();
     setFieldValue("drafters", [
       ...values.drafters,
-      { function: "", colleague: "" },
+      { id: generateUUID(), function: "", colleague: "" },
     ]);
   };
+
   const onAddNewAssessor = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
     e.preventDefault();
     setFieldValue("assessors", [
       ...values.assessors,
-      { function: "", colleague: "" },
+      { id: generateUUID(), function: "", colleague: "" },
     ]);
   };
+
   const onAddNewGroupItem = useCallback(
     (e?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
       e?.preventDefault();
       setFieldValue("groupMembers", [
         ...values.groupMembers,
-        { department: "", subfolder: "" },
+        { id: generateUUID(), department: "", subfolder: "" },
       ]);
     },
-    [setFieldValue, values.groupMembers]
+    [setFieldValue, values.groupMembers],
   );
 
   useEffect(() => {
@@ -75,12 +82,10 @@ const NewDocumentForm = () => {
       <section className="flex w-full flex-col gap-[30px] rounded-[10px] bg-light-common-white h-max p-[30px] dark:bg-dark-gray">
         <Container className="grid lg:grid-cols-2 xl:grid-cols-3 3xl:grid-auto-rows gap-3 lg:gap-30">
           <SearchableSelect
-            options={[
-              { label: "HR", value: "HR" },
-              { label: "IT", value: "IT" },
-            ]}
+            options={departmentOptions}
             onChange={(value) => setFieldValue("department", value?.value)}
             placeholder="Select Department"
+            isLoading={deptLoading}
             isSearchable={true}
             label="Department"
             required
@@ -116,13 +121,11 @@ const NewDocumentForm = () => {
             required
           />
           <SearchableSelect
-            options={[
-              { label: "Confidential", value: "Confidential" },
-              { label: "Public", value: "Public" },
-            ]}
+            options={classificationOptions}
             onChange={(value) => setFieldValue("classification", value?.value)}
             placeholder="Select Classification"
             isSearchable={true}
+            isLoading={loading}
             label="Classification"
             required
             className=""
@@ -145,7 +148,7 @@ const NewDocumentForm = () => {
             >
               <Button
                 disabled={hasEmptyValues(
-                  values?.drafters[values?.drafters.length - 1]
+                  values?.drafters[values?.drafters.length - 1],
                 )}
                 onClick={onAddNewDrafter}
                 leftIcon="add-square"
@@ -158,13 +161,18 @@ const NewDocumentForm = () => {
               {values.drafters.map((drafter, index) => (
                 <SingleColleagueItem
                   index={index}
-                  key={index}
+                  key={drafter?.id}
                   drafter={drafter}
                   count={values.drafters.length}
-                  setFieldValue={setFieldValue}
-                  handleRemoveItem={(_, deleteIndex) => {
+                  handleFunctionChange={(value) =>
+                    setFieldValue(`drafters[${index}].function`, value?.value)
+                  }
+                  handleColleagueChange={(value) =>
+                    setFieldValue(`drafters[${index}].colleague`, value?.value)
+                  }
+                  handleRemoveItem={() => {
                     const newValues = values?.drafters?.filter(
-                      (_, index) => index !== deleteIndex
+                      (item) => item.id !== drafter.id,
                     );
                     setFieldValue("drafters", newValues);
                   }}
@@ -180,7 +188,7 @@ const NewDocumentForm = () => {
             >
               <Button
                 disabled={hasEmptyValues(
-                  values?.assessors[values?.assessors.length - 1]
+                  values?.assessors[values?.assessors.length - 1],
                 )}
                 onClick={onAddNewAssessor}
                 leftIcon="add-square"
@@ -192,13 +200,18 @@ const NewDocumentForm = () => {
               {values.assessors.map((assessor, index) => (
                 <SingleColleagueItem
                   index={index}
-                  key={index}
+                  key={assessor.id}
                   drafter={assessor}
                   count={values.assessors.length}
-                  setFieldValue={setFieldValue}
-                  handleRemoveItem={(_, deleteIndex) => {
+                  handleFunctionChange={(value) =>
+                    setFieldValue(`assessors[${index}].function`, value?.value)
+                  }
+                  handleColleagueChange={(value) =>
+                    setFieldValue(`assessors[${index}].colleague`, value?.value)
+                  }
+                  handleRemoveItem={() => {
                     const newValues = values?.assessors?.filter(
-                      (_, index) => index !== deleteIndex
+                      (item) => item.id !== assessor.id,
                     );
                     setFieldValue("assessors", newValues);
                   }}
@@ -211,48 +224,67 @@ const NewDocumentForm = () => {
           <div className="flex flex-col xl:flex-row gap-30 w-full">
             <section className="w-full xl:w-6/12 flex flex-col gap-10">
               <div className="flex flex-col gap-10">
-                <div className="flex justify-between">
-                  <RadioGroup
-                    options={GeneralRadioOptions}
-                    name="copyToNewGroup"
-                    label="Do you want to copy this item to the new group?"
-                    required
-                    selectedValue={values.copyToNewGroup}
-                    onChange={(value) => {
-                      setFieldValue("copyToNewGroup", value);
-                    }}
-                  />
-                  <Button
-                    disabled={hasEmptyValues(
-                      values?.groupMembers[values?.groupMembers.length - 1]
-                    )}
-                    onClick={onAddNewGroupItem}
-                    leftIcon="add-square"
-                  >
-                    Add
-                  </Button>
+                <div className="flex flex-col xl:flex-row gap-2 justify-between">
+                  <div className="w-9/12">
+                    <RadioGroup
+                      options={GeneralRadioOptions}
+                      name="copyToNewGroup"
+                      label="Do you want to copy this item to the new group?"
+                      required
+                      selectedValue={values.copyToNewGroup}
+                      onChange={(value) => {
+                        setFieldValue("copyToNewGroup", value);
+                      }}
+                    />
+                  </div>
+                  {values.copyToNewGroup === "yes" && (
+                    <Button
+                      disabled={hasEmptyValues(
+                        values?.groupMembers[values?.groupMembers.length - 1],
+                      )}
+                      onClick={onAddNewGroupItem}
+                      leftIcon="add-square"
+                      className="w-max"
+                    >
+                      Add
+                    </Button>
+                  )}
                 </div>
                 {values.copyToNewGroup === "yes" ? (
                   <div className="flex w-full gap-4 flex-col">
-                    {values.groupMembers.map((groupMember, index) => (
-                      <SingleGroupItem
-                        index={index}
-                        key={index}
-                        group={groupMember}
-                        count={values.groupMembers.length}
-                        setFieldValue={setFieldValue}
-                        handleRemoveItem={(_, deleteIndex) => {
-                          const newValues = values?.groupMembers?.filter(
-                            (_, index) => index !== deleteIndex
-                          );
-                          setFieldValue("groupMembers", newValues);
-                        }}
-                      />
-                    ))}
+                    {values.groupMembers.map(
+                      (groupMember: SingleGroupType, index) => (
+                        <SingleGroupItem
+                          index={index}
+                          key={groupMember?.id}
+                          group={groupMember}
+                          count={values.groupMembers.length}
+                          handleFunctionChange={(value) =>
+                            setFieldValue(
+                              `groupMembers[${index}].department`,
+                              value?.value,
+                            )
+                          }
+                          handleColleagueChange={(value) =>
+                            setFieldValue(
+                              `groupMembers[${index}].subfolder`,
+                              value?.value,
+                            )
+                          }
+                          handleRemoveItem={() => {
+                            const newValues = values?.groupMembers?.filter(
+                              (item: SingleGroupType) =>
+                                item.id !== groupMember.id,
+                            );
+                            setFieldValue("groupMembers", [...newValues]);
+                          }}
+                        />
+                      ),
+                    )}
                   </div>
                 ) : null}
               </div>
-              <div>
+              <div className="w-9/12">
                 <RadioGroup
                   options={GeneralRadioOptions}
                   name="isRuleOfLife"
@@ -309,7 +341,11 @@ const NewDocumentForm = () => {
           <ImageUpload label="Upload Document" labelClassName="" required />
         </Container>
         <div className="flex justify-end w-full">
-          <Button variant="purple" className="w-[250px]" type="submit">
+          <Button
+            variant="purple"
+            className="w-full md:w-[250px]"
+            type="submit"
+          >
             Submit
           </Button>
         </div>
@@ -346,7 +382,9 @@ const SubHeaderContent = ({
   className?: string;
 }) => {
   return (
-    <div className={`flex items-start justify-between ${className}`}>
+    <div
+      className={`flex flex-col lg:flex-row gap-2 items-start justify-between ${className}`}
+    >
       <div className="flex flex-col gap-3">
         <h4 className="font-bold text-light-gray dark:text-dark-common-light">
           {title}

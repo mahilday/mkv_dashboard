@@ -29,7 +29,7 @@ const headerBtns: { title: string; variant: VariantTypes }[] = [
 const Header = () => {
   return (
     <section className="header-wrapper flex items-center sticky top-0 z-50 ">
-      <div className="mx-auto container px-5 lg:px-[50px] flex gap-8 xl:gap-[75px] items-center">
+      <div className="mx-auto container px-5 lg:px-[50px] flex gap-3 lg:gap-5 xl:gap-7 2xl:gap-[75px] items-center">
         <div className="w-max">
           <TextInput
             type="text"
@@ -49,19 +49,19 @@ const Header = () => {
           ))}
         </div>
         <section className="flex flex-1 items-center justify-end xl:justify-between">
-          <div className=" hidden xl:flex items-center gap-[10px]">
+          <div className="hidden xl:flex items-center gap-1 2xl:gap-[10px]">
             {headerBtns?.map((item, index) => (
               <Button
                 innerTextClassname="font-bold text-xs 2xl:text-base text-light-common-white"
                 key={index}
                 variant={item?.variant}
-                className=""
+                className="lg:w-max lg:px-3 2xl:px-4"
               >
                 {item?.title}
               </Button>
             ))}
           </div>
-          <div className="flex gap-[10px]">
+          <div className="flex gap-1 2xl:gap-[10px]">
             <NotificationComponent />
 
             <UserProfile />

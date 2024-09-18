@@ -1,52 +1,46 @@
+import { useColleagueOptions } from "@/app/api/hooks/useColleagueOptions";
+import { useFunctionOptions } from "@/app/api/hooks/useFunctionOptions";
 import Button from "@/components/Button";
 import IconComponent from "@/components/Icons/Icon";
-import SearchableSelect from "@/components/Inputs/SearchableSelect";
-import { NewDocType } from "@/types/document";
-import { FormikErrors } from "formik";
+import SearchableSelect, {
+  OptionType,
+} from "@/components/Inputs/SearchableSelect";
 
-type SingleGroupType = {
+export type SingleGroupType = {
+  id: string;
   department: string;
   subfolder: string;
 };
+
+export interface ISingleItemType {
+  index: number;
+  group: SingleGroupType;
+  handleRemoveItem?<T>(item?: T, index?: number): void;
+  count: number;
+  handleFunctionChange?(value: OptionType): void;
+  handleColleagueChange?(value: OptionType): void;
+}
 
 const SingleGroupItem = ({
   index,
   group,
   handleRemoveItem,
-  setFieldValue,
+  handleColleagueChange,
+  handleFunctionChange,
   count,
-}: {
-  index: number;
-  group: SingleGroupType;
-  handleRemoveItem?(item: SingleGroupType, index: number): void;
-  count: number;
-  setFieldValue: (
-    field: string,
-    value: string | number,
-    shouldValidate?: boolean
-  ) => Promise<void> | Promise<FormikErrors<NewDocType>>;
-}) => {
-  const functionOptions = [
-    { label: "Manager", value: "Manager" },
-    { label: "Developer", value: "Developer" },
-    // Add more options as needed
-  ];
-
-  const colleagueOptions = [
-    { label: "John Doe", value: "John Doe" },
-    { label: "Jane Smith", value: "Jane Smith" },
-  ];
+}: ISingleItemType) => {
+  const { functionOptions, loading: functionLoading } = useFunctionOptions();
+  const { colleagueOptions, loading: colleagueLoading } = useColleagueOptions();
 
   return (
     <div className="flex items-center flex-wrap w-full gap-5">
       <div className="flex-1 min-w-[200px]">
         <SearchableSelect
           options={functionOptions}
-          onChange={(value) =>
-            setFieldValue(`drafters[${index}].function`, value?.value)
-          }
+          onChange={handleFunctionChange}
           className="w-full"
-          placeholder="Select Function"
+          isLoading={functionLoading}
+          placeholder="Select Department"
           label="Department"
           required
           isSearchable={true}
@@ -55,11 +49,10 @@ const SingleGroupItem = ({
       <div className="flex-1 min-w-[200px]">
         <SearchableSelect
           options={colleagueOptions}
-          onChange={(value) =>
-            setFieldValue(`drafters[${index}].colleague`, value?.value)
-          }
+          onChange={handleColleagueChange}
+          isLoading={colleagueLoading}
           className="w-full"
-          placeholder="Select Colleague"
+          placeholder="Select Sub folder"
           required
           label="Sub folder"
           isSearchable={true}
@@ -70,7 +63,7 @@ const SingleGroupItem = ({
         <Button
           onClick={() => handleRemoveItem?.(group, index)}
           variant="error"
-          className="px-3 py-2"
+          className="xl:mt-2 px-3 py-2"
         >
           <IconComponent name="minus" />
         </Button>

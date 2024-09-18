@@ -36,10 +36,10 @@ const RadioGroup = ({
         {options.map((option) => (
           <div
             key={option.value}
-            className={`form-control group w-[180px] h-[54px] rounded-lg flex justify-center px-5 ${
+            className={`form-control group w-[180px] bg-light-common-light dark:bg-dark-common-dark h-[54px] rounded-lg flex justify-center px-5 ${
               selectedValue === option.value
-                ? "border border-light-primary bg-light-common-light"
-                : "bg-light-common-light"
+                ? "border border-light-primary"
+                : ""
             }`}
           >
             <label className="label cursor-pointer w-max space-x-2">

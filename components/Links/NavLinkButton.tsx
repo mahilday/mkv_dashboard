@@ -44,7 +44,7 @@ const NavLinkButton: FC<NavLinkButtonProps> = ({
 
   const classes = [
     buttonStyle,
-    `${isOpen ? "px-5 flex" : "flex justify-center"}`,
+    `${isOpen ? "pl-3 pr-3 flex" : "flex p-3 justify-center"}`,
     `shrink-0  transition items-center gap-3 text-gray-400 bg-transparent transition-all duration-300 ease-in-out hover:rounded-md h-[44px]`,
     shapeClassName,
     className,

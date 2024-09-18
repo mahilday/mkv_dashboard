@@ -22,8 +22,8 @@ const TextInput: FC<ITextInputProps> = ({
   onIconClick,
   leftIcon,
   rightIcon,
-  leftIconClassName,
-  rightIconClassName,
+  leftIconClassName = "text-light-gray-400 dark:text-dark-primary-200",
+  rightIconClassName = "text-light-gray-400 dark:text-dark-primary-200",
   topRightLabel,
   bottomLeftLabel,
   bottomRightLabel,
@@ -47,19 +47,28 @@ const TextInput: FC<ITextInputProps> = ({
         <span className="label-text-alt">{topRightLabel}</span>
       </div>
       <div
-        className={`input flex items-center gap-2 min-w-[240px] w-full ${className} `}
+        className={`input flex items-center gap-2 overscroll-contain w-full ${className} `}
       >
-        {leftIcon ? (
-          <div className={leftIconClassName} onClick={onIconClick}>
+        {leftIcon && (
+          <div
+            className={`flex-shrink-0 ${leftIconClassName}`}
+            onClick={onIconClick}
+          >
             <IconComponent name={leftIcon} size={iconSize} />
           </div>
-        ) : null}
-        <input className={`flex-1 font-normal`} {...props} />
-        {rightIcon ? (
-          <div className={rightIconClassName} onClick={onIconClick}>
+        )}
+        <input
+          className={`w-11/12 font-normal text-light-gray dark:text-light-common-white`}
+          {...props}
+        />
+        {rightIcon && (
+          <div
+            className={`flex-shrink-0 ${rightIconClassName} cursor-pointer`}
+            onClick={onIconClick}
+          >
             <IconComponent name={rightIcon} size={iconSize} />
           </div>
-        ) : null}
+        )}
       </div>
       <div className="label">
         <span className="label-text-alt">{bottomLeftLabel}</span>

@@ -2,6 +2,7 @@ import AddCircleIcon from "./pack/AddCircleIcon";
 import AddSquareIcon from "./pack/AddSquareIcon";
 import AgendaIcon from "./pack/AgendaIcon";
 import CalendarIcon from "./pack/CalendarIcon";
+import ChatIcon from "./pack/ChatIcon";
 import ChevronDownIcon from "./pack/ChevronDownIcon";
 import CloseIcon from "./pack/CloseIcon";
 import DashboardIcon from "./pack/DashboardIcon";
@@ -54,6 +55,7 @@ const iconPack = {
   calendar: CalendarIcon,
   upload: UploadIcon,
   close: CloseIcon,
+  chat: ChatIcon,
 };
 
 export { iconPack };

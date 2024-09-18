@@ -79,7 +79,7 @@ const ImageUpload = ({
         )}
       </div>
       <div
-        className={`border w-full rounded-[10px] h-[92px] flex flex-col bg-light-common-light items-center justify-center cursor-pointer ${
+        className={`border dark:border-none w-full rounded-[10px] h-[92px] flex flex-col bg-light-common-light dark:bg-dark-common-dark items-center justify-center cursor-pointer ${
           isUploading ? "border-gray-400" : "border-light-primary-200"
         }`}
         onDrop={handleDrop}
