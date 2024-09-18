@@ -11,7 +11,7 @@ type IProgressBarProps = {
 const ProgressBar: FC<IProgressBarProps> = ({
   value,
   max = 100,
-  className,
+  className = "progress-light-gray-700",
   customColor = lightColors.gray[700],
 }) => {
   return (
