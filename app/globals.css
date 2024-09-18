@@ -2,26 +2,202 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@layer base {
+  html {
+    scroll-behavior: smooth !important;
+  }
+  html,
+  body {
+    @apply text-gray-400;
+    @apply font-medium;
+  }
+  h1 {
+    @apply text-xl sm:text-2xl lg:text-3xl;
+    @apply font-bold;
+  }
+  h2 {
+    @apply text-2xl;
+    @apply font-semibold;
+  }
+  h3 {
+    @apply text-xl;
+    @apply font-semibold;
+  }
+  h4 {
+    @apply text-lg;
+    @apply font-semibold;
+  }
+  h5 {
+    @apply text-base;
+    @apply font-medium;
+  }
+  h6 {
+    @apply text-[14px];
+    @apply font-semibold;
+  }
+  p {
+    @apply text-xs md:text-sm xl:text-base;
+    @apply font-normal;
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  button:disabled,
+  input:disabled,
+  textarea:disabled,
+  select:disabled {
+    @apply cursor-not-allowed;
+  }
+
+  button,
+  a,
+  textarea,
+  select {
+    height: 46px;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  label {
+    @apply font-medium;
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  .btn {
+    @apply rounded-xl font-medium;
+  }
+
+  .custom-toggle {
+    @apply border-none bg-light-common-white dark:bg-dark-common-white;
+    --tglbg: #bac1cc;
+    background-color: var(--tglbg);
+  }
+
+  .custom-toggle:hover {
+    @apply hover:bg-light-common-light dark:hover:bg-dark-common-light; /* Apply Tailwind hover utility */
+  }
+
+  /* If you need to change background color on checked state */
+  .custom-toggle:checked {
+    @apply bg-light-common-white dark:bg-dark-common-white;
+  }
+
+  .btn-outline {
+    @apply border-gray-200;
+  }
+
+  .modal-box {
+    @apply p-3;
+  }
+
+  .modal-header {
+    @apply mb-4;
+  }
+
+  .modal-body {
+    @apply flex-1 overflow-y-auto;
+  }
+
+  .modal-action,
+  .modal-footer {
+    @apply mt-4;
+  }
+
+  .btn-unstyled {
+    background-color: inherit;
+    color: inherit;
+    padding: inherit;
+    display: inherit;
+    text-align: inherit;
+    display: inherit;
+    height: inherit;
+    min-height: inherit;
+    border-radius: inherit;
+
+    @apply transition-shadow;
+    @apply ring-green;
+    @apply hover:ring-2;
+    @apply focus:ring-2;
+  }
+
+  .h-46 {
+    @apply h-[46px];
+  }
+
+  .gap-30 {
+    @apply gap-[30px];
+  }
+
+  .header-wrapper {
+    @apply h-[90px] w-full border-b border-light-primary-300 bg-light-common-white dark:bg-dark-gray;
+  }
+
+  .input {
+    @apply h-[54px] bg-light-common-light dark:bg-dark-common-dark;
+  }
+
+  .generalBg {
+    @apply text-black dark:text-white bg-light-common-light dark:bg-dark-gray-400;
+  }
+
+  .flex-allow-truncate .flex {
+    min-width: 0;
+  }
+
+  .header-item-active:has(a.item-active) .header-item-title {
+    @apply rounded-none border-b-2 border-b-orange text-orange;
+  }
+
+  .tab:is(input:checked) {
+    @apply border-light-purple text-white;
+  }
+
+  .max-w-page {
+    @apply px-5 lg:px-[50px];
+  }
+
+  @media screen and (min-width: 640px) {
+    .modal-box {
+      @apply p-6;
+    }
+
+    .modal-header {
+      @apply mb-6;
+    }
+
+    .modal-action,
+    .modal-footer {
+      @apply mt-6;
+    }
+  }
 }
 
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .hide-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+
+  /* styles/globals.css */
+  .scrollbar-custom {
+    scrollbar-width: thin; /* Firefox: thin scrollbar */
+    scrollbar-color: #bac1cc #edf2f7; /* Firefox: thumb and track color */
+  }
+
+  .scrollbar-custom::-webkit-scrollbar {
+    width: 4px; /* WebKit browsers: thinner scrollbar */
+    height: 4px; /* For horizontal scrollbar */
+  }
+
+  .scrollbar-custom::-webkit-scrollbar-thumb {
+    background-color: #bac1cc;
+    border-radius: 10px; /* Ensures a rounded scrollbar thumb */
+  }
+
+  .scrollbar-custom::-webkit-scrollbar-track {
+    background-color: #edf2f7;
   }
 }
