@@ -68,7 +68,7 @@ const NewDocumentForm = () => {
     if (values.copyToNewGroup === "yes" && values.groupMembers.length === 0) {
       onAddNewGroupItem();
     }
-  }, [values.copyToNewGroup]);
+  }, [values.copyToNewGroup, onAddNewGroupItem, values.groupMembers.length]);
 
   return (
     <form className="w-full" onSubmit={handleSubmit}>

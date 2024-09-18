@@ -64,6 +64,7 @@ const ImageUpload = ({
       });
     }, 300);
   };
+  console.log({ file });
 
   return (
     <div className="w-full mx-auto">
