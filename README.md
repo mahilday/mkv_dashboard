@@ -21,8 +21,8 @@ To get started with the development setup, follow these steps:
 1. **Clone the Repository:**
 
    ```bash
-   git clone https://github.com/your-username/your-repository.git
-   cd your-repository
+   git clone https://github.com/mahilday/mkv_dashboard.git
+   cd mkv_dashboard
    ```
 2. **Install:**
    ```bash
