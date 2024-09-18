@@ -3,6 +3,7 @@ import { useState, useRef, ReactNode } from "react";
 import IconComponent from "./Icons/Icon";
 import ProgressBar from "./ProgressBar";
 import Label from "./Label";
+import Image from "next/image";
 
 const ImageUpload = ({
   label,
@@ -112,8 +113,10 @@ const ImageUpload = ({
           <ProgressContainer removeFile={clearFile}>
             <div className="w-full flex items-center gap-2">
               {previewUrl && (
-                <img
+                <Image
                   src={previewUrl}
+                  width={48}
+                  height={48}
                   alt="Preview"
                   className="mb-4 rounded-md w-12 h-12 object-cover"
                 />

@@ -7,7 +7,6 @@ import { usePathname } from "next/navigation";
 import { TIconPack } from "@/assets/icons";
 import variants, { VariantTypes } from "./variants";
 import ComponentLoader from "../Loaders/ComponentLoader";
-import { useTheme } from "@/contexts/ThemeContext";
 
 export interface NavLinkButtonProps extends Omit<LinkProps, "className"> {
   children?: ReactNode;
@@ -32,7 +31,6 @@ const NavLinkButton: FC<NavLinkButtonProps> = ({
   rightIconProps,
   isLoading,
   className = "",
-  handleClick,
   buttonStyle = "",
   isOpen,
   href,

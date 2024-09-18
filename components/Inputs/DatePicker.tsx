@@ -1,5 +1,5 @@
 "use client";
-import { FC, useId, useState } from "react";
+import { FC, useState } from "react";
 
 import Datepicker from "tailwind-datepicker-react";
 import { IOptions } from "tailwind-datepicker-react/types/Options";
@@ -22,15 +22,12 @@ const DatePicker: FC<DatePickerProps> = ({
   error,
   helperText,
   helperTextClassName,
-  label,
-  labelClassName,
   required,
   minDate,
   maxDate,
   value,
   handleChange,
 }) => {
-  const inputId = useId();
   const options: IOptions = {
     autoHide: true,
     todayBtn: true,

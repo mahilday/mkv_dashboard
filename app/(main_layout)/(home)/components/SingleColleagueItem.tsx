@@ -22,7 +22,7 @@ const SingleColleagueItem = ({
   handleRemoveItem?(item: SingleDraftType, index: number): void;
   setFieldValue: (
     field: string,
-    value: any,
+    value: string | number,
     shouldValidate?: boolean
   ) => Promise<void> | Promise<FormikErrors<NewDocType>>;
 }) => {

@@ -10,7 +10,6 @@ interface IToggleProps
 }
 
 const ToggleComponent: React.FC<IToggleProps> = ({
-  innerBgColor,
   className = "",
   ...props
 }) => {

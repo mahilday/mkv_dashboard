@@ -35,27 +35,34 @@ const NewDocumentForm = () => {
     },
   });
 
-  const onAddNewDrafter = (e: any) => {
+  const onAddNewDrafter = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
     e.preventDefault();
     setFieldValue("drafters", [
       ...values.drafters,
       { function: "", colleague: "" },
     ]);
   };
-  const onAddNewAssessor = (e: any) => {
+  const onAddNewAssessor = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
     e.preventDefault();
     setFieldValue("assessors", [
       ...values.assessors,
       { function: "", colleague: "" },
     ]);
   };
-  const onAddNewGroupItem = useCallback((e?: any) => {
-    e?.preventDefault();
-    setFieldValue("groupMembers", [
-      ...values.groupMembers,
-      { department: "", subfolder: "" },
-    ]);
-  }, []);
+  const onAddNewGroupItem = useCallback(
+    (e?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+      e?.preventDefault();
+      setFieldValue("groupMembers", [
+        ...values.groupMembers,
+        { department: "", subfolder: "" },
+      ]);
+    },
+    [setFieldValue, values.groupMembers]
+  );
 
   useEffect(() => {
     if (values.copyToNewGroup === "yes" && values.groupMembers.length === 0) {

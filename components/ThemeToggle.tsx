@@ -1,7 +1,6 @@
 import { useTheme } from "@/contexts/ThemeContext";
 import React from "react";
 import ToggleComponent from "./Inputs/ToggleComponent";
-import { lightColors } from "@/constants/colors";
 import { useSidebar } from "@/contexts/SidebarContext";
 
 const ThemeToggle = () => {

@@ -7,7 +7,7 @@ const Avatar: FC<IAvatarProps> = ({ ...props }) => {
   return (
     <div className="avatar py-1">
       <div className="w-full rounded-full">
-        <Image {...props} />
+        <Image {...props} alt="user avatar" />
       </div>
     </div>
   );

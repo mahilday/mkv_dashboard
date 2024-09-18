@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React from "react";
 import DocumentPageHeader from "./components/DocumentPageHeader";
 import PageTitleWithBackBtn from "@/components/PageTitleWithBackBtn";
 import NewDocumentForm from "./components/NewDocumentForm";
